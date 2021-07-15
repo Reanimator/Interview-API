@@ -12,14 +12,18 @@ import jwt
 from datetime import datetime
 from datetime import timedelta
 
+from apiapp.models import Questions
+
 
 class UserManager(BaseUserManager):
     def _create_user(self, username, email, password=None, **extra_fields):
         if not username:
-            raise ValueError('Указанное имя пользователя должно быть установлено')
+            raise ValueError(
+                'Указанное имя пользователя должно быть установлено')
 
         if not email:
-            raise ValueError('Данный адрес электронной почты должен быть установлен')
+            raise ValueError(
+                'Данный адрес электронной почты должен быть установлен')
 
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, **extra_fields)
@@ -50,14 +54,15 @@ class UserManager(BaseUserManager):
             raise ValueError('Суперпользователь должен иметь is_staff=True.')
 
         if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Суперпользователь должен иметь is_superuser=True.')
+            raise ValueError(
+                'Суперпользователь должен иметь is_superuser=True.')
 
         return self._create_user(username, email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
-    Определяет наш пользовательский класс User.
+    Модель для пользователей-администраторов
     Требуется имя пользователя, адрес электронной почты и пароль.
     """
     username = models.CharField(db_index=True, max_length=255, unique=True)
@@ -65,7 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         validators=[validators.validate_email],
         unique=True,
         blank=False
-        )
+    )
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -109,3 +114,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.username
+
+
+class Anon(models.Model):
+    """Модель для Анонимных пользователей"""
+    anon_id = models.IntegerField("ID анонимного пользователя")
+    question = models.OneToOneField(Questions, on_delete=models.CASCADE)
+    answer = models.TextField("Ответ пользователя на вопрос")
