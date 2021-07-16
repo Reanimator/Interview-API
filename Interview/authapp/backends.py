@@ -9,7 +9,7 @@ from .models import User
 
 
 class JWTAuthentication(authentication.BaseAuthentication):
-    authentication_header_prefix = 'Bearer'
+    authentication_header_prefix = 'Token'
 
     def authenticate(self, request):
         request.user = None
@@ -36,7 +36,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
     def _authenticate_credentials(self, request, token):
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY)
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
         except:
             msg = 'Invalid authentication. Could not decode token.'
             raise exceptions.AuthenticationFailed(msg)

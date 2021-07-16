@@ -100,11 +100,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         этого пользователя и срок его действия
         составляет 60 дней в будущем.
         """
-        dt = datetime.now() + timedelta(days=60)
+        # Срок действия токена в днях
+        TOKEN_PERIOD = 60
+
+        dt = datetime.now().timestamp() + timedelta(days=TOKEN_PERIOD).total_seconds()
 
         token = jwt.encode({
             'id': self.pk,
-            'exp': int(dt.strftime('%S'))
+            'exp': dt
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token

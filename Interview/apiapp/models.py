@@ -4,15 +4,10 @@ from django.utils import timezone
 
 class Interviews(models.Model):
     """Модель для опросов"""
-    name = models.CharField("Название опроса", max_length=50)
+    name = models.CharField("Название опроса", max_length=50, unique=True)
     start_date = models.DateField("Дата старта")
     end_date = models.DateField("Дата окончания")
     about = models.TextField("Описание")
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.start_date = timezone.now()
-        return super(Interviews, self).save(*args, **kwargs)
 
 
 class Questions(models.Model):
