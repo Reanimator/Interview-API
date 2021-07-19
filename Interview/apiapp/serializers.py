@@ -4,9 +4,11 @@ from rest_framework import serializers
 
 from .models import Interviews
 from .models import Questions
+from .models import AnonInterviews
 
 
 class AdminInterviewsSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Interviews
         fields = ['id', 'name', 'start_date', 'end_date', 'about']
@@ -21,25 +23,15 @@ class AdminInterviewsSerializer(serializers.ModelSerializer):
 
 
 class QuestionsTypeSerializer(serializers.Serializer):
+
     question_type = serializers.CharField()
 
 
 class QuestionsFullSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Questions
-        fields = [
-            'id',
-            'interview',
-            'question',
-            'question_type',
-            'text_answer',
-            'var_answer_1',
-            'var_answer_2',
-            'var_answer_3',
-            'var_answer_4',
-            'var_answer_correct',
-            'mvar_answer_correct'
-        ]
+        fields = '__all__'
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -48,6 +40,7 @@ class QuestionsFullSerializer(serializers.ModelSerializer):
 
 
 class QuestionsTextSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Questions
         fields = [
@@ -59,6 +52,7 @@ class QuestionsTextSerializer(serializers.ModelSerializer):
 
 
 class QuestionsVarSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Questions
         fields = [
@@ -74,6 +68,7 @@ class QuestionsVarSerializer(serializers.ModelSerializer):
 
 
 class QuestionsMvarSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Questions
         fields = [
@@ -87,3 +82,9 @@ class QuestionsMvarSerializer(serializers.ModelSerializer):
             'var_answer_4',
             'mvar_answer_correct']
 
+
+class AnonInterviewsAnswerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AnonInterviews
+        fields = '__all__'

@@ -1,9 +1,9 @@
 from django.db import models
-from django.utils import timezone
 
 
 class Interviews(models.Model):
     """Модель для опросов"""
+
     name = models.CharField("Название опроса", max_length=50)
     start_date = models.DateField("Дата старта")
     end_date = models.DateField("Дата окончания")
@@ -12,6 +12,7 @@ class Interviews(models.Model):
 
 class Questions(models.Model):
     """Модель для вопросов"""
+
     TYPE = [
         ('text', 'ответ текстом'),
         ('1var', 'ответ с выбором одного варианта'),
@@ -46,3 +47,13 @@ class Questions(models.Model):
         "Номера нескольких правильных ответов на вопрос",
         max_length=4,
         blank=True)
+
+
+class AnonInterviews(models.Model):
+    """Модель для ответов пользователя"""
+
+    anon_id = models.IntegerField("ID пользователя")
+    interview = models.ForeignKey(Interviews, on_delete=models.CASCADE)
+    question = models.ForeignKey(Questions, on_delete=models.CASCADE)
+    anon_answer = models.TextField(
+        "Номер ответа/ответ пользователя на вопрос")

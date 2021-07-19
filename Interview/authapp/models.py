@@ -16,7 +16,9 @@ from apiapp.models import Questions
 
 
 class UserManager(BaseUserManager):
+
     def _create_user(self, username, email, password=None, **extra_fields):
+
         if not username:
             raise ValueError(
                 'Указанное имя пользователя должно быть установлено')
@@ -117,10 +119,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.username
-
-
-class Anon(models.Model):
-    """Модель для Анонимных пользователей"""
-    anon_id = models.IntegerField("ID анонимного пользователя")
-    question = models.OneToOneField(Questions, on_delete=models.CASCADE)
-    answer = models.TextField("Ответ пользователя на вопрос")
