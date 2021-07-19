@@ -28,13 +28,13 @@ class Questions(models.Model):
     text_answer = models.TextField("Ответ текстом", blank=True)
 
     var_answer_1 = models.TextField(
-        "Первый ответ на вопрос с выбором одного варианта", blank=True)
+        "Первый ответ на вопрос", blank=True)
     var_answer_2 = models.TextField(
-        "Второй ответ на вопрос с выбором одного варианта", blank=True)
+        "Второй ответ на вопрос", blank=True)
     var_answer_3 = models.TextField(
-        "Третий ответ на вопрос с выбором одного варианта", blank=True)
+        "Третий ответ на вопрос", blank=True)
     var_answer_4 = models.TextField(
-        "Четвертый ответ на вопрос с выбором одного варианта", blank=True)
+        "Четвертый ответ на вопрос", blank=True)
 
     var_answer_correct = models.CharField(
         "Номер единственного правильного ответа на вопрос",

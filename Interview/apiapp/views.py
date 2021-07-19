@@ -163,7 +163,7 @@ class AdminModQuestionsView(APIView):
 class AnonInterviewsView(APIView):
     permission_classes = [AllowAny]
 
-    """Получение списка активных опросов опросов"""
+    """Получение списка активных опросов"""
     def get(self, request):
 
         queryset = Interviews.objects.all()
