@@ -1,16 +1,15 @@
+from collections import OrderedDict
+
 from rest_framework import serializers
 
 from .models import Interviews
+from .models import Questions
 
 
-class AdminAddInterviewsSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=50)
-    start_date = serializers.DateField()
-    end_date = serializers.DateField()
-    about = serializers.CharField()
-
-    def create(self, validated_data):
-        return Interviews.objects.create(**validated_data)
+class AdminInterviewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Interviews
+        fields = ['id', 'name', 'start_date', 'end_date', 'about']
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
@@ -21,5 +20,70 @@ class AdminAddInterviewsSerializer(serializers.Serializer):
         return instance
 
 
-class QuestionsSerializer(serializers.ModelSerializer):
-    print('QuestionsSerializer')
+class QuestionsTypeSerializer(serializers.Serializer):
+    question_type = serializers.CharField()
+
+
+class QuestionsFullSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = [
+            'id',
+            'interview',
+            'question',
+            'question_type',
+            'text_answer',
+            'var_answer_1',
+            'var_answer_2',
+            'var_answer_3',
+            'var_answer_4',
+            'var_answer_correct',
+            'mvar_answer_correct'
+        ]
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret = OrderedDict(list(filter(lambda x: x[1], ret.items())))
+        return ret
+
+
+class QuestionsTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = [
+            'id',
+            'interview',
+            'question',
+            'question_type',
+            'text_answer']
+
+
+class QuestionsVarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = [
+            'id',
+            'interview',
+            'question',
+            'question_type',
+            'var_answer_1',
+            'var_answer_2',
+            'var_answer_3',
+            'var_answer_4',
+            'var_answer_correct']
+
+
+class QuestionsMvarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = [
+            'id',
+            'interview',
+            'question',
+            'question_type',
+            'var_answer_1',
+            'var_answer_2',
+            'var_answer_3',
+            'var_answer_4',
+            'mvar_answer_correct']
+

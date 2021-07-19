@@ -4,7 +4,7 @@ from django.utils import timezone
 
 class Interviews(models.Model):
     """Модель для опросов"""
-    name = models.CharField("Название опроса", max_length=50, unique=True)
+    name = models.CharField("Название опроса", max_length=50)
     start_date = models.DateField("Дата старта")
     end_date = models.DateField("Дата окончания")
     about = models.TextField("Описание")
@@ -34,24 +34,15 @@ class Questions(models.Model):
         "Третий ответ на вопрос с выбором одного варианта", blank=True)
     var_answer_4 = models.TextField(
         "Четвертый ответ на вопрос с выбором одного варианта", blank=True)
-    var_answer_correct = models.CharField(
-        "Номер правильного ответа на вопрос",
-        max_length=1,
-        blank=True,
-        default='0')
 
-    mvar_answer_1 = models.TextField(
-        "Первый ответ на вопрос с выбором нескольких вариантов", blank=True)
-    mvar_answer_2 = models.TextField(
-        "Второй ответ на вопрос с выбором нескольких вариантов", blank=True)
-    mvar_answer_3 = models.TextField(
-        "Третий ответ на вопрос с выбором нескольких вариантов", blank=True)
-    mvar_answer_4 = models.TextField(
-        "Четвертый ответ на вопрос с выбором нескольких вариантов", blank=True)
+    var_answer_correct = models.CharField(
+        "Номер единственного правильного ответа на вопрос",
+        max_length=1,
+        blank=True)
+
     # Хранение по принципу битового соответствия, например 0101 - правильный
     # ответ 2 и 4
     mvar_answer_correct = models.CharField(
-        "Номер правильного ответа на вопрос",
+        "Номера нескольких правильных ответов на вопрос",
         max_length=4,
-        blank=True,
-        default='0000')
+        blank=True)
